@@ -51,11 +51,11 @@
             float: left;
 
         }
-        .TituloEpisodio{
+        .TituloAnime{
             float: left;
             margin-left: 10px;
         }
-        .resumoEpisodio{
+        .resumoAnime{
             width: fit-content;
             float: left;
         }
@@ -123,11 +123,22 @@
                 var paragrafo = document.createElement("p");
                 var div1 = document.createElement("div");
                 var imagem = document.createElement("img");
+                var div2 = document.createElement("div");
+                var titulo = document.createElement("h3");
+                var div3 = document.createElement("div");
+                var resumo = document.createElement("p");
+                titulo.innerText = total.results[i].title;
+                div2.appendChild(titulo);
+                resumo.innerText = total.results[i].synopsis;
+                div3.appendChild(resumo);
+                div2.appendChild(div3);
                 imagem.setAttribute('src',total.results[i].image_url);
-                div1.innerText = total.results[i].image_url;
+                //div1.innerText = total.results[i].image_url;
+               
+                div1.appendChild(imagem);
                 paragrafo.appendChild(div1);
-                paragrafo.appendChild(imagem);
-                document.getElementById("episodiosOrganizados").appendChild(paragrafo);
+                paragrafo.appendChild(div2);
+                document.getElementById("animesOrganizados").appendChild(paragrafo);
                 /*
                 var paragrafo = document.createElement("p");
                 var div1 = document.createElement("div");
@@ -222,15 +233,15 @@
                     <p></p>
                 </div>
         
-                <div class="organizarEpisodios" id= "episodiosOrganizados">
+                <div class="organizarAnimes" id= "animesOrganizados">
                     <p>
                         <div class="imagemEpisodio">
                             <img src="https:\/\/cdn.myanimelist.net\/images\/anime\/5\/17407.jpg?s=2bf24a22a339223dcadb1cdfc3307b61"
                                 alt="narutinho">
                         </div>
-                        <div class="TituloEpisodio">
+                        <div class="TituloAnime">
                             <h3>Titulo episodio 1</h3>
-                            <div class="resumoEpisodio">
+                            <div class="resumoAnime">
                                 <p>texto do resumo do episodioiijdfndfefu uhfiuehifh h wiefh ihfi uwhefiuwhe ifhieh f iuwhefi hwiehf iuwhef
                                     iuhweifu wi iwueh iu wiuh iwuher wiuehr iuwehr iuqii uwheri uqwieuhr iuhwer iuhweruih qwerh iuhwqerhiuw
                                     iuhweiruhqwierh iuweriuhwqeriuqwhruihwqieu iuweriuqwheriuhwqiruhwqiuhqweriuq </p>
