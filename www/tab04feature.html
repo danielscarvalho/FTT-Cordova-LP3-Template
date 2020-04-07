@@ -47,11 +47,28 @@
             padding-top: 56px;
             padding-bottom: 50px;
         }
+        .imagemEpisodio{
+            float: left;
+
+        }
+        .TituloEpisodio{
+            float: left;
+            margin-left: 10px;
+        }
+        .resumoEpisodio{
+            width: fit-content;
+            float: left;
+        }
+        .organizarEpisodios{
+            width: auto;
+        }
     </STYLE>
     <SCRIPT>
         
         
         var total ;
+        var firstText;
+        var listaEpisodios;
      function callAnimeApi() {
          var xhttpRequest = new XMLHttpRequest();
 
@@ -61,28 +78,114 @@
          xhttpRequest.onreadystatechange = function () {
              if (this.readyState === 4 && this.status == 200) {
                  
-                // console.log('Body:', this.responseText);
+              
                 total = JSON.parse(this.responseText);
             
-                document.getElementById("jsonData").innerText = this.responseText;
+                //document.getElementById("jsonData").innerText = this.responseText;
                 
-               createVideowall(total)
+              // createVideowall(total)
+               popularVideowall(total)
              }
          }
-         xhttpRequest.open('GET', 'https://api.jikan.moe/v3/search/anime?q=' + pesquisado + '&limit=2' );//+ requesto + '/' + parameter + '');
+         xhttpRequest.open('GET', 'https://api.jikan.moe/v3/search/anime?q=' + pesquisado + '&limit=20' );//+ requesto + '/' + parameter + '');
          xhttpRequest.send();
      };
- 
+ /*
      function createVideowall(total){
-        var firstText = total.results[0].mal_id;
+         firstText = total.results[0].mal_id;
          var pTag = document.createElement("p");
 
          pTag.innerText = firstText;
 
          document.getElementById("resultData").appendChild(pTag);
+         pegarEpisodios(firstText)
            
-     }
-     
+     }*/
+/*
+     function pegarEpisodios(animeId) {
+            var xhttpRequest = new XMLHttpRequest();
+            xhttpRequest.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status == 200) {
+                    listaEpisodios = JSON.parse(this.responseText);
+                    document.getElementById("listEpisodes").innerText = this.responseText;
+                    popularVideowall(listaEpisodios)
+                }
+            }
+            xhttpRequest.open('GET', 'https://api.jikan.moe/v3/anime/' + animeId + '/episodes');
+            xhttpRequest.send();
+        }
+*/
+        function popularVideowall(total){
+
+            for (i in total.results){
+                
+               // document.getElementById("listimagens").innertext = total.results[i].image_url;
+                var paragrafo = document.createElement("p");
+                var div1 = document.createElement("div");
+                var imagem = document.createElement("img");
+                imagem.setAttribute('src',total.results[i].image_url);
+                div1.innerText = total.results[i].image_url;
+                paragrafo.appendChild(div1);
+                paragrafo.appendChild(imagem);
+                document.getElementById("episodiosOrganizados").appendChild(paragrafo);
+                /*
+                var paragrafo = document.createElement("p");
+                var div1 = document.createElement("div");
+                div1.setAttribute('class','imagemEpisodio');
+                var imagem = document.createElement("img");
+                var textoimagem = total.results[i].image_url;
+                var txt = toString(textoimagem.innerText);
+                imagem.setAttribute('src', txt);
+                div1.appendChild(imagem);
+                paragrafo.appendChild(div1);
+
+                document.getElementById("episodiosOrganizados").appendChild(paragrafo);*/
+                
+            }
+               
+            
+            /*
+             for (i in nData) { // 
+                
+                var a = document.createElement("ARTICLE"); // Create a <ARTICLE> element
+                a.setAttribute("class", "card");
+
+               // var nImg = document.createElement("IMG"); // Create a <H2> element
+                
+                var h2 = document.createElement("H2"); // Create a <H2> element
+                h2.setAttribute("class", "card-header");
+                
+                var h3 = document.createElement("H3");
+                h3.setAttribute("class", "card-header");
+                
+                //var desc = document.createElement("P"); // Create a <H2> element
+                var desc = document.createElement("H5"); // Create a <H2> element
+                desc.setAttribute("class", "card-body");
+
+                var ath = document.createElement("P"); // Create a <AUTHOR> element
+                ath.setAttribute("class", "card-header");
+
+                //  nImg.src = nData.articles[i].urlToImage; // Create a text node
+                //nImg.style.width = '100%'; //The full width is 400px, 10px of border left and right
+                h2.innerText = nData[i].title; // Create a text node
+                h3.innerText = nData[i].company;
+                ath.innerText = nData[i].location; // + " - " + nData.articles[i].source.name;
+                desc.innerHTML =  nData[i].description;
+                
+                //a.appendChild(nImg);      
+                a.appendChild(h2); // Append the text to 
+                a.appendChild(h3);                
+                a.appendChild(ath);
+                a.appendChild(desc);
+                
+
+                document.getElementById("aluno").appendChild(a); // document doc html inteiro, nessa busca so retorno um elemento
+
+            }
+            */
+            
+        }
+    
     </SCRIPT>
 </HEAD>
 
@@ -104,27 +207,51 @@
             </div>
         </div>
     </nav>
-    <!-- conteúdo estático -->
+    <!-- conteúdo estático --><!--escrever aqui o app -->
     <main class="container" id="aluno">
         <hr>
         <h1><span class="badge badge-success">Projeto do aluno Carlos Reis!!<BR>Lista de animes</span></h1>
-
-        <div>
-            <!--escrever aqui o app -->
-            <input type="search" id="busca" placeholder="Digite aqui o anime!" required></input>
-            <button onclick="callAnimeApi();">Pesquisar animes</button>
-            <!--callApi()-->
-            <!--<div id="resposta"></div>-->
-            <div> 
-                
-                    <p  id="jsonData"></p>
-                <p id="resultData"></p>
-           
-               
+    
+        <div class="conteudo">
+            <div class="elementoBusca">
+                <input type="search" id="busca" placeholder="Digite aqui o anime!" required></input>
+                <button onclick="callAnimeApi();">Pesquisar animes</button>
             </div>
-            
+            <nav class="navbar">
+                <div>
+                    <p></p>
+                </div>
+        
+                <div class="organizarEpisodios" id= "episodiosOrganizados">
+                    <p>
+                        <div class="imagemEpisodio">
+                            <img src="https:\/\/cdn.myanimelist.net\/images\/anime\/5\/17407.jpg?s=2bf24a22a339223dcadb1cdfc3307b61"
+                                alt="narutinho">
+                        </div>
+                        <div class="TituloEpisodio">
+                            <h3>Titulo episodio 1</h3>
+                            <div class="resumoEpisodio">
+                                <p>texto do resumo do episodioiijdfndfefu uhfiuehifh h wiefh ihfi uwhefiuwhe ifhieh f iuwhefi hwiehf iuwhef
+                                    iuhweifu wi iwueh iu wiuh iwuher wiuehr iuwehr iuqii uwheri uqwieuhr iuhwer iuhweruih qwerh iuhwqerhiuw
+                                    iuhweiruhqwierh iuweriuhwqeriuqwhruihwqieu iuweriuqwheriuhwqiruhwqiuhqweriuq </p>
+                            </div>
+                        </div>
+                    </p>
+                   <div class="resumoEpisodio">
+                    <p id="jsonData"></p>
+                    <p id="resultData"></p>
+                    <p id="listimagens"></p>
+                   </div>
+                    
+                    
+        
+                </div>
+                <p>  </p>
+            </nav>
+           
+    
         </div>
-        <p>        .            </p>
+        <p> . </p>
         <!-- <p><a href="https://github.com/public-apis/public-apis" target="_apis">Lista de APIs públicas</a></p>-->
     </main>
     <!-- conteúdo estático fim-->
