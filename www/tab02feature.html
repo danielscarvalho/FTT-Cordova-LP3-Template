@@ -42,10 +42,31 @@
             padding-top: 56px;
             padding-bottom: 50px;
         }
+        .text-mid {
+            display: flex; 
+            justify-content: center;
+            padding-top: 56px;
+        }
+        .btn-mid {
+            display: flex; 
+            justify-content: center;
+            padding-top: 75px;
+        }
     </STYLE>
     <SCRIPT>
-
-
+        
+        function callApi() {
+            
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    apiMessage = JSON.parse(this.responseText);
+                    document.getElementById("joke").innerText = apiMessage.joke;
+                }
+            };
+            xhttp.open("GET", "https://sv443.net/jokeapi/v2/joke/Programming?type=single", true);
+            xhttp.send();
+        }
 
     </SCRIPT>
 </HEAD>
@@ -68,11 +89,32 @@
         </div>
     </nav>
 
-    <main class="container" id="aluno">
-        <hr>
-        <h1><span class="badge badge-success">Projeto do aluno!!<br>Feature 2</span></h1>
-        <p><a href="https://github.com/public-apis/public-apis" target="_apis">Lista de APIs públicas</a></p>
-    </main>
+    <marquee scrollamount="25" style="padding-top: 50px" behavior="scroll" direction="left">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">FUNNY JOKE</marquee>
+
+    <div class="btn-mid">
+        <button onclick="callApi()">
+            Tell me a FuNnY JoKe HaHa...
+        </button>
+    </div>
+
+    <div id="joke" class="text-mid">
+    </div>
+
+    <marquee scrollamount="25" style="padding-top: 50px" behavior="scroll" direction="left">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">FUNNY JOKE</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="right">HAHA</marquee>
+    <marquee scrollamount="25" behavior="scroll" direction="left">FUNNY JOKE</marquee>
 
     <nav class="navbar fixed-bottom navbar-light bg-light width-button-bar">
         <div class="row w-100 bottom-button-bar">
