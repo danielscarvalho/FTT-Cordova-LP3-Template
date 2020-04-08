@@ -63,7 +63,7 @@
             width: auto;
         }
         .paragrafoAnime{
-            background-color: #343a40;
+            background-color:/* #343a40*//*#8FBC8F*//*#2F4F4F*/ 	#1C1C1C;
         }
         .imagemAnime{
             
@@ -74,6 +74,7 @@
             width:98%;
     height:auto;
     overflow:hidden;
+    color: #6495ED;
         }
     </STYLE>
     <SCRIPT>
@@ -136,6 +137,8 @@
                  titulo.setAttribute("float","left");
                  resumo.setAttribute("float","left");
                  resumo.setAttribute('margin-top','5px');//
+                 resumo.setAttribute('color','#6495ED')
+                 div3.setAttribute('background-color','#8FBC8F')
                  div2.appendChild(titulo);
                  resumo.innerText = total.results[i].synopsis;
                  div3.appendChild(resumo);
@@ -146,6 +149,7 @@
                  titulo.setAttribute('margin-left','35%');//
                 
                  div1.setAttribute('display','table');
+                 div1.setAttribute('color','#6495ED');
                  paragrafo.setAttribute('height','auto');
                 paragrafo.setAttribute('overflow','hidden');
                  paragrafo.setAttribute('class','paragrafoAnime');
