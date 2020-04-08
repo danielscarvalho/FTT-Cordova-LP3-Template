@@ -65,78 +65,48 @@
         .paragrafoAnime{
             background-color: #343a40;
         }
+        .imagemAnime{
+            
+                    float: left;
+
+        }
+        .atributoPai{
+            width:98%;
+    height:auto;
+    overflow:hidden;
+        }
     </STYLE>
     <SCRIPT>
         
         
-        var total ;
-        var firstText;
-        var listaEpisodios;
-     function callAnimeApi() {
-         var xhttpRequest = new XMLHttpRequest();
-        document.getElementById("animesOrganizados").innerHTML="";
-         var pesquisado = document.getElementById("busca").value;
-         
-         xhttpRequest.open('GET', 'https://api.jikan.moe/v3/search/anime?q=' + pesquisado + '&limit=20' );
-         xhttpRequest.onreadystatechange = function () {
+            var total;
+            var firstText;
+            var listaEpisodios;
+    function callAnimeApi() {
+                var xhttpRequest = new XMLHttpRequest();
+                document.getElementById("animesOrganizados").innerHTML = "";
+                var pesquisado = document.getElementById("busca").value;
+
+                xhttpRequest.open('GET', 'https://api.jikan.moe/v3/search/anime?q=' + pesquisado + '&limit=20');
+        xhttpRequest.onreadystatechange = function () {
              if (this.readyState === 4) {
                  
               
                 total = JSON.parse(this.responseText);
             
-                //document.getElementById("jsonData").innerText = this.responseText;
-                
-              // createVideowall(total)
                popularVideowall(total)
              }
-             /*else var error_message = "Ops! Erro!!!<br> pelo visto o que procurou não existe!<br>";
-                    //console.log(error_message);
-                    var imgerro = document.createElement("img");
-                    imgerro.setAttribute('src','https://i.ytimg.com/vi/wEWF2xh5E8s/0.jpg');
-                    document.getElementById("aluno").innerHTML = error_message;
-                    document.getElementById("aluno").appendChild(imgerro);
-                    
-                    let error_message= "Ops! Erro!!!<br> pelo visto o que procurou não existe!<br>";
-                    console.log(error_message);
-                    var imgerro = document.createElement("img");
-                    imgerro.setAttribute('src','https://i.ytimg.com/vi/wEWF2xh5E8s/0.jpg');
-                    document.getElementById("aluno").innerHTML = error_message;
-                    document.getElementById("aluno").appendChild(imgerro);
-                }*/
+            
          }
-         //+ requesto + '/' + parameter + '');
+        
          xhttpRequest.send();
      };
- /*
-     function createVideowall(total){
-         firstText = total.results[0].mal_id;
-         var pTag = document.createElement("p");
 
-         pTag.innerText = firstText;
-
-         document.getElementById("resultData").appendChild(pTag);
-         pegarEpisodios(firstText)
-           
-     }*/
-/*
-     function pegarEpisodios(animeId) {
-            var xhttpRequest = new XMLHttpRequest();
-            xhttpRequest.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status == 200) {
-                    listaEpisodios = JSON.parse(this.responseText);
-                    document.getElementById("listEpisodes").innerText = this.responseText;
-                    popularVideowall(listaEpisodios)
-                }
-            }
-            xhttpRequest.open('GET', 'https://api.jikan.moe/v3/anime/' + animeId + '/episodes');
-            xhttpRequest.send();
-        }
-*/
         function popularVideowall(total){
                 if(total.results[0] == null)
                 {
                     var error_message = "Ops! Erro!!!<br> pelo visto o que procurou não existe!<br>";
-                    //console.log(error_message);
+                    
                     var imgerro = document.createElement("img");
                     imgerro.setAttribute('src','https://i.ytimg.com/vi/wEWF2xh5E8s/0.jpg');
                     document.getElementById("aluno").innerHTML = error_message;
@@ -150,30 +120,47 @@
                  var div1 = document.createElement("div");
                  var imagem = document.createElement("img");
                  var div2 = document.createElement("div");
-                 var titulo = document.createElement("h3");
+                 var titulo = document.createElement("h1");
+                 var lincado = document.createElement("a");//
                  var div3 = document.createElement("div");
-                 var resumo = document.createElement("p");
-                 titulo.innerText = total.results[i].title;
+                 var resumo = document.createElement("h4");
+                 var div4 = document.createElement("div");
+
+                div4.setAttribute('float', 'left');
+                div4.setAttribute('width','auto');
+               
+                 lincado.innerText = total.results[i].title;//
+                 lincado.setAttribute('href',total.results[i].url)//
+                 lincado.setAttribute('target', '_blank');//
+                 titulo.appendChild(lincado);//
+                 titulo.setAttribute("float","left");
+                 resumo.setAttribute("float","left");
+                 resumo.setAttribute('margin-top','5px');//
                  div2.appendChild(titulo);
                  resumo.innerText = total.results[i].synopsis;
                  div3.appendChild(resumo);
                  div2.appendChild(div3);
                  imagem.setAttribute('src',total.results[i].image_url);
-                 
+                 imagem.setAttribute("class","imagemAnime");//
                 
-                 div1.appendChild(imagem);
+                 titulo.setAttribute('margin-left','35%');//
+                
+                 div1.setAttribute('display','table');
+                 paragrafo.setAttribute('height','auto');
+                paragrafo.setAttribute('overflow','hidden');
                  paragrafo.setAttribute('class','paragrafoAnime');
+                 
+                div1.setAttribute('class','atributoPai');
+                 div4.appendChild(imagem);
+                 div1.appendChild(div4);
+                 div1.appendChild(div2);
                  paragrafo.appendChild(div1);
-                 paragrafo.appendChild(div2);
+              
                  document.getElementById("animesOrganizados").appendChild(paragrafo);
                  
                  
              
                 }
-            
-               
-            
-            
             
         }
     
@@ -214,28 +201,7 @@
                 </div>
         
                 <div class="organizarAnimes" id= "animesOrganizados">
-                    <!--<p>
-                        <div class="imagemEpisodio">
-                            <img src="https:\/\/cdn.myanimelist.net\/images\/anime\/5\/17407.jpg?s=2bf24a22a339223dcadb1cdfc3307b61"
-                                alt="narutinho">
-                        </div>
-                        <div class="TituloAnime">
-                            <h3>Titulo episodio 1</h3>
-                            <div class="resumoAnime">
-                                <p>texto do resumo do episodioiijdfndfefu uhfiuehifh h wiefh ihfi uwhefiuwhe ifhieh f iuwhefi hwiehf iuwhef
-                                    iuhweifu wi iwueh iu wiuh iwuher wiuehr iuwehr iuqii uwheri uqwieuhr iuhwer iuhweruih qwerh iuhwqerhiuw
-                                    iuhweiruhqwierh iuweriuhwqeriuqwhruihwqieu iuweriuqwheriuhwqiruhwqiuhqweriuq </p>
-                            </div>
-                        </div>
-                    </p>
-                   <div class="resumoEpisodio">
-                    <p id="jsonData"></p>
-                    <p id="resultData"></p>
-                    <p id="listimagens"></p>
-                   </div>-->
-                    
-                    
-        
+           
                 </div>
                 <p>  </p>
             </nav>
