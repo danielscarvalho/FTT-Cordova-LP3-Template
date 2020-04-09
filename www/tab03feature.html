@@ -44,9 +44,18 @@
         }
     </STYLE>
     <SCRIPT>
-
-
-
+        var total;
+        function callAPI() {
+            var xhttpRequest = new XMLHttpRequest();
+            xhttpRequest.onreadystatechange = function () {
+             if (this.readyState === 4) {
+                total = JSON.parse(this.responseText);
+                listaPokemons(total);
+             }
+         }
+         xhttpRequest.open("GET", "https://api.pokemontcg.io/v1/sets");
+         xhttpRequest.send();
+        }
     </SCRIPT>
 </HEAD>
 
