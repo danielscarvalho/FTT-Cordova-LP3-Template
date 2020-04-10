@@ -13,47 +13,161 @@
             color: black;
             width: 90px;
             padding: 4px;
-            margin:0;
-            border:0;
+            margin: 0;
+            border: 0;
         }
+
         .button-selected {
             background-color: #343a40;
             color: white;
             border-radius: 15px;
-        }       
+        }
+
         .width-button-bar {
             text-align: center;
             padding-top: 5px;
             padding-bottom: 5px;
             margin-right: 0;
             margin-left: 0;
-            
+
         }
+
         .bottom-button-bar {
-            margin:0;
-            padding:0;
-            border:0;
+            margin: 0;
+            padding: 0;
+            border: 0;
             width: 100%;
         }
+
         .icon-font {
-            font-size: 40px;   
+            font-size: 40px;
         }
+
         main {
             padding-top: 56px;
             padding-bottom: 50px;
         }
+
+        fieldset {
+            width: 280px;
+        }
+
+        fieldset div {
+            clear: both;
+        }
+
+        fieldset div label {
+            float: right;
+        }
     </STYLE>
     <SCRIPT>
+        var form = {};
+        var cartaSelecionada = 0
+        //form.colecao = document.getElementById("name");
 
+        var getJSON = function (url, sucesso, erro) {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", url, true);
+            httpRequest.responseType = "json";
+            httpRequest.addEventListener("readystatechange", function (event) {
+                if (httpRequest.readyState == 4) {
+                    if (httpRequest.status == 200) {
+                        if (sucesso) sucesso(httpRequest.response);
+                    } else {
+                        if (erro) erro(httpRequest.status, httpRequest.statusText);
+                    }
+                }
+            });
+            httpRequest.send();
+        }
 
+        //var form = {};
+        //form.codigo = document.getElementById("code");
+
+        var getVersao = function (callback) {
+            var url = 'https://api.pokemontcg.io/v1/sets';
+            getJSON(url, function (colecao) {
+                var selectOption = document.createElement("option");
+                selectOption.textContent = "Selecione...";
+                selectOption.value = "";
+                colecao.sets.forEach(set => {
+                    var optionColecao = document.createElement("option");
+                    optionColecao.textContent = set.name;
+                    optionColecao.value = set.code;
+                    //optionColecao.setAttribute("onChange", 'getPokemon()')
+                    document.getElementById("colecao").appendChild(optionColecao);
+                });
+            },
+                function (errorCode, errorText) { });
+
+            callback();
+        }
+
+        var getPokemon = function () {
+            setTimeout(function () {
+                var selectOption = document.getElementById("colecao").value
+                //console.log(selectOption);
+
+                var url = 'https://api.pokemontcg.io/v1/cards?setCode=' + selectOption;
+
+                getJSON(url, function (codigo) {
+                    
+                    form = codigo
+                    var select = document.getElementById("pokemon");
+                    var length = select.options.length;
+                    for (i = length - 1; i >= 0; i--) {
+                        select.options[i] = null;
+                    }
+                    codigo.cards.forEach(card => {
+                        var listaPokemon = document.createElement("option");
+                        listaPokemon.textContent = card.name;
+                        listaPokemon.value = card.id;
+                        //listaPokemon.setAttribute('onchange', 'showPokemon()')
+
+                        document.getElementById("pokemon").appendChild(listaPokemon);
+
+                    })
+
+                    //console.log(document.getElementById("pokemon"))
+                },
+                    function (errorCode, errorText) { });
+
+            }, 1000)
+        }
+        function showPokemon() {
+            var id = document.getElementById("pokemon").value
+            //console.log('id:' + id)
+            form.cards.forEach(card => {
+                if (id == card.id) {
+                    var html = '<div display="table" color="#6495ED" class="">\
+                                    <div float="left" width="auto">\
+                                        <img src='+ card.imageUrl + ' class="">\
+                                    </div>\
+                                    <div>\
+                                        <h1 float="left" margin-left="35%">\
+                                            <a href="https://pokemontcg.io/cards/'+ card.id.trim() + '" target="_blank">#' + card.number + ' ' + card.name + '</a>\
+                                        </h1>\
+                                        <div background-color="#8FBC8F">\
+                                            <h4 float="left" margin-top="5px" color="">\
+                                                Rarity: ' + card.rarity + '<br>Deck: ' + card.set + '<br>Supertype: ' + card.supertype + '<br>\
+                                            </h4> \
+                                        </div>\
+                                </div>'
+                    document.getElementById("cardSelected").innerHTML = html
+
+                }
+            })
+
+        }
 
     </SCRIPT>
 </HEAD>
 
-<BODY lang="pt-br">
+<BODY onload="getVersao(getPokemon);" lang="pt-br">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -70,26 +184,53 @@
 
     <main class="container" id="aluno">
         <hr>
-        <h1><span class="badge badge-success">Projeto do aluno!!<br>Feature 3</span></h1>
-        <p><a href="https://github.com/public-apis/public-apis" target="_apis">Lista de APIs públicas</a></p>
+        <h1><span class="badge badge-success">Projeto do aluno<br>Iago Gomes</span></h1>
+
+        <form id="name" method="POST" action="enviar">
+            <div>
+                <option>Selecione a versão do deck</option>
+                <select id="colecao" name="colecao" onchange="getPokemon();"></select>
+            </div>
+            <br>
+            <div>
+                <option>Selecione o pokémon</option>
+                <select id="pokemon" name="pokemon" onchange="showPokemon();"></select>
+            </div>
+            <br>
+            <p>Carta selecionada:</p>
+
+            <div id="cardSelected">
+
+            </div>
+        </form>
     </main>
 
     <nav class="navbar fixed-bottom navbar-light bg-light width-button-bar">
         <div class="row w-100 bottom-button-bar">
-            <div class="col-sm center-txt"><b onclick='window.location="tab01feature.html"'>Feature 1<br><span class="icon-font">&#x1f4f0;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab01feature.html"'>Feature 1<br><span
+                        class="icon-font">&#x1f4f0;</span></b>
             </div>
-            <div class="col-sm center-txt"><b onclick='window.location="tab02feature.html"'>Feature 2<br><span class="icon-font">&#x1f4cc;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab02feature.html"'>Feature 2<br><span
+                        class="icon-font">&#x1f4cc;</span></b>
             </div>
-            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab03feature.html"'>Feature 3<br><span class="icon-font">&#x1F4DD;</span></b>
+            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab03feature.html"'>Feature
+                    3<br><span class="icon-font">&#x1F4DD;</span></b>
             </div>
-            <div class="col-sm center-txt"><b onclick='window.location="tab04feature.html"'>Feature 4<br><span class="icon-font">&#x1F981;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab04feature.html"'>Feature 4<br><span
+                        class="icon-font">&#x1F981;</span></b>
             </div>
         </div>
     </nav>
 </BODY>
 <!-- carga de scripts do Bootstrap, JQuery, Popper -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+    integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+    crossorigin="anonymous"></script>
 
 </HTML>

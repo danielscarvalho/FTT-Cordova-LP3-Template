@@ -3,8 +3,8 @@
 
 <HEAD>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!-- A biblioteca bundle já contem os arquivos JS do Bootstrap, Popper, e jQuery.
-    <script src="js/bootstrap.bundle.js"></script>-->
+    <!-- A biblioteca bundle já contem os arquivos JS do Bootstrap, Popper, e jQuery.-->
+    <script src="js/bootstrap.bundle.js"></script>
     <title>FTT EC LP2 N1!!</title>
     <LINK REL="stylesheet" HREF="css/bootstrap.css" />
     <STYLE>
@@ -13,47 +13,169 @@
             color: black;
             width: 90px;
             padding: 4px;
-            margin:0;
-            border:0;
+            margin: 0;
+            border: 0;
         }
+
         .button-selected {
             background-color: #343a40;
             color: white;
             border-radius: 15px;
-        }       
+        }
+
         .width-button-bar {
             text-align: center;
             padding-top: 5px;
             padding-bottom: 5px;
             margin-right: 0;
             margin-left: 0;
-            
+
         }
+
         .bottom-button-bar {
-            margin:0;
-            padding:0;
-            border:0;
+            margin: 0;
+            padding: 0;
+            border: 0;
             width: 100%;
         }
+
         .icon-font {
-            font-size: 40px;   
+            font-size: 40px;
         }
+
         main {
             padding-top: 56px;
             padding-bottom: 50px;
         }
+        .imagemEpisodio{
+            float: left;
+
+        }
+        .TituloAnime{
+            float: left;
+            margin-left: 10px;
+        }
+        .resumoAnime{
+            width: fit-content;
+            float: left;
+        }
+        .organizarEpisodios{
+            width: auto;
+        }
+        .paragrafoAnime{
+            background-color:/* #343a40*//*#8FBC8F*//*#2F4F4F*/ 	#1C1C1C;
+        }
+        .imagemAnime{
+            
+                    float: left;
+
+        }
+        .atributoPai{
+            width:98%;
+    height:auto;
+    overflow:hidden;
+    color: #6495ED;
+        }
     </STYLE>
     <SCRIPT>
+        
+        
+            var total;
+            var firstText;
+            var listaEpisodios;
+    function callAnimeApi() {
+                var xhttpRequest = new XMLHttpRequest();
+                document.getElementById("animesOrganizados").innerHTML = "";
+                var pesquisado = document.getElementById("busca").value;
 
+                xhttpRequest.open('GET', 'https://api.jikan.moe/v3/search/anime?q=' + pesquisado + '&limit=20');
+        xhttpRequest.onreadystatechange = function () {
+             if (this.readyState === 4) {
+                 
+              
+                total = JSON.parse(this.responseText);
+            
+               popularVideowall(total)
+             }
+            
+         }
+        
+         xhttpRequest.send();
+     };
 
+        function popularVideowall(total){
+                if(total.results[0] == null)
+                {
+                    var error_message = "Ops! Erro!!!<br> pelo visto o que procurou não existe!<br>";
+                    
+                    var imgerro = document.createElement("img");
+                    imgerro.setAttribute('src','https://i.ytimg.com/vi/wEWF2xh5E8s/0.jpg');
+                    document.getElementById("aluno").innerHTML = error_message;
+                    document.getElementById("aluno").appendChild(imgerro);
+                }
+            
+                for (i in total.results){
+                
+                
+                 var paragrafo = document.createElement("p");
+                 var div1 = document.createElement("div");
+                 var imagem = document.createElement("img");
+                 var div2 = document.createElement("div");
+                 var titulo = document.createElement("h1");
+                 var lincado = document.createElement("a");//
+                 var div3 = document.createElement("div");
+                 var resumo = document.createElement("h4");
+                 var div4 = document.createElement("div");
 
+                div4.setAttribute('float', 'left');
+                div4.setAttribute('width','auto');
+               
+                 lincado.innerText = total.results[i].title;//
+                 lincado.setAttribute('href',total.results[i].url)//
+                 lincado.setAttribute('target', '_blank');//
+                 titulo.appendChild(lincado);//
+                 titulo.setAttribute("float","left");
+                 resumo.setAttribute("float","left");
+                 resumo.setAttribute('margin-top','5px');//
+                 resumo.setAttribute('color','#6495ED')
+                 div3.setAttribute('background-color','#8FBC8F')
+                 div2.appendChild(titulo);
+                 resumo.innerText = total.results[i].synopsis;
+                 div3.appendChild(resumo);
+                 div2.appendChild(div3);
+                 imagem.setAttribute('src',total.results[i].image_url);
+                 imagem.setAttribute("class","imagemAnime");//
+                
+                 titulo.setAttribute('margin-left','35%');//
+                
+                 div1.setAttribute('display','table');
+                 div1.setAttribute('color','#6495ED');
+                 paragrafo.setAttribute('height','auto');
+                paragrafo.setAttribute('overflow','hidden');
+                 paragrafo.setAttribute('class','paragrafoAnime');
+                 
+                div1.setAttribute('class','atributoPai');
+                 div4.appendChild(imagem);
+                 div1.appendChild(div4);
+                 div1.appendChild(div2);
+                 paragrafo.appendChild(div1);
+              
+                 document.getElementById("animesOrganizados").appendChild(paragrafo);
+                 
+                 
+             
+                }
+            
+        }
+    
     </SCRIPT>
 </HEAD>
 
 <BODY lang="pt-br">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -67,29 +189,59 @@
             </div>
         </div>
     </nav>
-
+    <!-- conteúdo estático --><!--escrever aqui o app -->
     <main class="container" id="aluno">
         <hr>
-        <h1><span class="badge badge-success">Projeto do aluno!!<BR>Feature 4</span></h1>
-        <p><a href="https://github.com/public-apis/public-apis" target="_apis">Lista de APIs públicas</a></p>
+        <h1><span class="badge badge-success">Projeto do aluno Carlos Reis!!<BR>Lista de animes</span></h1>
+    
+        <div class="conteudo">
+            <div class="elementoBusca">
+                <input type="search" id="busca" placeholder="Digite aqui o anime!" required></input>
+                <button onclick="callAnimeApi();">Pesquisar animes</button>
+            </div>
+            <nav class="navbar">
+                <div>
+                    <p></p>
+                </div>
+        
+                <div class="organizarAnimes" id= "animesOrganizados">
+           
+                </div>
+                <p>  </p>
+            </nav>
+           
+    
+        </div>
+        <p>  </p>
+        <!-- <p><a href="https://github.com/public-apis/public-apis" target="_apis">Lista de APIs públicas</a></p>-->
     </main>
-
+    <!-- conteúdo estático fim-->
     <nav class="navbar fixed-bottom navbar-light bg-light width-button-bar">
         <div class="row w-100 bottom-button-bar">
-            <div class="col-sm center-txt"><b onclick='window.location="tab01feature.html"'>Feature 1<br><span class="icon-font">&#x1f4f0;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab01feature.html"'>Feature 1<br><span
+                        class="icon-font">&#x1f4f0;</span></b>
             </div>
-            <div class="col-sm center-txt"><b onclick='window.location="tab02feature.html"'>Feature 2<br><span class="icon-font">&#x1f4cc;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab02feature.html"'>Feature 2<br><span
+                        class="icon-font">&#x1f4cc;</span></b>
             </div>
-            <div class="col-sm center-txt"><b onclick='window.location="tab03feature.html"'>Feature 3<br><span class="icon-font">&#x1F4DD;</span></b>
+            <div class="col-sm center-txt"><b onclick='window.location="tab03feature.html"'>Feature 3<br><span
+                        class="icon-font">&#x1F4DD;</span></b>
             </div>
-            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab04feature.html"'>Feature 4<br><span class="icon-font">&#x1F981;</span></b>
+            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab04feature.html"'>Feature
+                    4<br><span class="icon-font">&#x1F981;</span></b>
             </div>
         </div>
     </nav>
 </BODY>
 <!-- carga de scripts do Bootstrap, JQuery, Popper -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+    integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+    crossorigin="anonymous"></script>
 
 </HTML>
