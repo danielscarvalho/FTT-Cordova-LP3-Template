@@ -94,7 +94,7 @@
                     var optionColecao = document.createElement("option");
                     optionColecao.textContent = set.name;
                     optionColecao.value = set.code;
-                    optionColecao.setAttribute("onclick", 'getPokemon()')
+                    //optionColecao.setAttribute("onChange", 'getPokemon()')
                     document.getElementById("colecao").appendChild(optionColecao);
                 });
             },
@@ -122,7 +122,7 @@
                         var listaPokemon = document.createElement("option");
                         listaPokemon.textContent = card.name;
                         listaPokemon.value = card.id;
-                        listaPokemon.setAttribute('onclick', 'showPokemon()')
+                        //listaPokemon.setAttribute('onchange', 'showPokemon()')
 
                         document.getElementById("pokemon").appendChild(listaPokemon);
 
@@ -136,9 +136,9 @@
         }
         function showPokemon() {
             var id = document.getElementById("pokemon").value
+            //console.log('id:' + id)
             form.cards.forEach(card => {
                 if (id == card.id) {
-                    console.log(id)
                     var html = '<div display="table" color="#6495ED" class="">\
                                     <div float="left" width="auto">\
                                         <img src='+ card.imageUrl + ' class="">\
@@ -189,12 +189,12 @@
         <form id="name" method="POST" action="enviar">
             <div>
                 <option>Selecione a versão do deck</option>
-                <select id="colecao" name="colecao"></select>
+                <select id="colecao" name="colecao" onchange="getPokemon();"></select>
             </div>
             <br>
             <div>
                 <option>Selecione o pokémon</option>
-                <select id="pokemon" name="pokemon"></select>
+                <select id="pokemon" name="pokemon" onchange="showPokemon();"></select>
             </div>
             <br>
             <p>Carta selecionada:</p>
